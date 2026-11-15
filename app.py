@@ -19,6 +19,14 @@ st.write("The Forgotten AI Laboratory")
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
+# Restart Game button
+with st.sidebar:
+    st.header("Game Controls")
+    st.write("Restart the game to clear the current conversation and start again.")
+    if st.button("🔄 Restart Game", type="primary"):
+        st.session_state.messages = []
+        st.rerun()
+
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.write(message["content"])
