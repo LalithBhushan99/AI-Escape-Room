@@ -17,6 +17,16 @@ st.title("🔐 AI Escape Room - Version 2")
 st.write("The Forgotten AI Laboratory")
 
 
+def new_game_state():
+    return {
+        "inventory": [],
+        "drawer_unlocked": False,
+        "computer_unlocked": False,
+        "painting_examined": False,
+        "door_unlocked": False
+    }
+
+
 def ask_gemini(game_state, player_action, game_result):
     prompt = f"""
 You are the Game Master of an AI Escape Room.
@@ -58,18 +68,21 @@ Now describe what happens to the player.
 
 
 if "game_state" not in st.session_state:
-    st.session_state.game_state = {
-        "inventory": [],
-        "drawer_unlocked": False,
-        "computer_unlocked": False,
-        "painting_examined": False,
-        "door_unlocked": False
-    }
+    st.session_state.game_state = new_game_state()
 
 state = st.session_state.game_state
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
+
+# Restart Game button
+with st.sidebar:
+    st.header("Game Controls")
+    st.write("Restart the game to clear the current state, inventory and conversation.")
+    if st.button("🔄 Restart Game", type="primary"):
+        st.session_state.game_state = new_game_state()
+        st.session_state.messages = []
+        st.rerun()
 
 st.markdown("""
 ### Your Mission
